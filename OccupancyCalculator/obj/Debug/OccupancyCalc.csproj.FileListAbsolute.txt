@@ -1,0 +1,11 @@
+U:\Repositories\OccupancyCalc\OccupancyCalc\bin\Debug\OccupancyCalc.exe.config
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\obj\Debug\MainWindow.baml
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\obj\Debug\MainWindow.g.cs
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\obj\Debug\OccupancyCalc.csproj.GenerateResource.Cache
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\bin\Debug\Gensler.OccupancyCalculator.dll
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\bin\Debug\Gensler.OccupancyCalculator.pdb
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\obj\Debug\Gensler.OccupancyCalculator_MarkupCompile.cache
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\obj\Debug\Gensler.OccupancyCalculator.g.resources
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\obj\Debug\Gensler.Properties.Resources.resources
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\obj\Debug\Gensler.OccupancyCalculator.dll
+U:\Repositories\github.com\dangwalsh\OccupancyCalc\OccupancyCalc\obj\Debug\Gensler.OccupancyCalculator.pdb

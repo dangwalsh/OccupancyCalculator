@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Assembly>Gensler.OccupancyCalculator.dll</Assembly>
+    <ClientId>EED0B494-8F79-4B01-8038-82B762C7ED6E</ClientId>
+    <FullClassName>Gensler.Command</FullClassName>
+    <Text>Occupancy Calculation Tool</Text>
+    <Description>A more accurate calculation of occupancy.</Description>
+    <VendorId>XXXX</VendorId>
+    <VendorDescription>Gensler</VendorDescription>
+  </AddIn>
+</RevitAddIns>
