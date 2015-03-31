@@ -18,9 +18,6 @@ namespace Gensler
         {
             try
             {
-                var app = commandData.Application;
-                var uidoc = app.ActiveUIDocument;
-                var doc = uidoc.Document;
                 var mainWindow = new MainWindow(new OccupancyController(new OccupancyModel(commandData)));
 
                 mainWindow.ShowDialog();

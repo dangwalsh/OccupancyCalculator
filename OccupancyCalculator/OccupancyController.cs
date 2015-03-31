@@ -4,7 +4,7 @@ namespace Gensler
 {
     public class OccupancyController
     {
-        private OccupancyModel _documentData;
+        private readonly OccupancyModel _documentData;
 
         public OccupancyController(OccupancyModel dd)
         {
