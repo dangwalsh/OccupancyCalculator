@@ -3,5 +3,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\Revit 2015\Revit.exe</StartProgram>
+    <StartArguments>OccTest.rvt</StartArguments>
+    <StartWorkingDirectory>C:\Users\22791\Desktop\</StartWorkingDirectory>
   </PropertyGroup>
 </Project>

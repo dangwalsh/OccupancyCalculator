@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
@@ -12,13 +14,6 @@ namespace Gensler
         private readonly Document _document;
 
         private readonly List<Occupancy> _occupancyTable;
-        //private readonly List<Occupancy> _occupancyTable = new List<Occupancy>()
-        //{
-        //    new Occupancy(@"Accessory storage areas, mechanical equipment room", 100),
-        //    new Occupancy(@"Agricultural building", 15),
-        //    new Occupancy(@"Aircraft hangers", 7),
-        //    new Occupancy(@"Airport terminal - Bagage claim", 5)
-        //};
 
         private readonly List<Element> _rooms;
 
@@ -95,21 +90,35 @@ namespace Gensler
         {
             List<Occupancy> occupancyTable = new List<Occupancy>();
             FilteredElementCollector collector = new FilteredElementCollector(_document);
-            List<Element> viewSchedules = collector.OfClass(typeof (ViewSchedule)).ToElements().ToList();
+            List<Element> viewSchedules = collector.OfClass(typeof (TableView)).ToElements().ToList();
             var element =
                 viewSchedules.FirstOrDefault(v => v.Name == @"* Manage Occupancy Table Per 2006 & 2009 Ibc 1004.1.2");
             ViewSchedule viewSchedule = element as ViewSchedule;
             if (null != viewSchedule)
             {
-                var n = viewSchedule.KeyScheduleParameterName;
-                var d = viewSchedule.GetTableData().GetSectionData(0);
-                int last = d.LastRowNumber;
-                for (int i = 0; i < last; i++)
+                if (@"Room Occupancy Designation" != viewSchedule.KeyScheduleParameterName)
                 {
-                    d.GetCellText(i, 0);
+                    throw new Exception(@"Addin is accessing the incorrect schedule key");
+                }
+
+                var sd = viewSchedule.GetTableData().GetSectionData(SectionType.Body);
+
+                for (int iRow = 2; iRow < sd.NumberOfRows; iRow++)
+                {
+                    var name = viewSchedule.GetCellText(SectionType.Body, iRow, 0);
+                    var sqft = viewSchedule.GetCellText(SectionType.Body, iRow, 1);
+                    int sqftNum;
+                    if (Int32.TryParse(sqft, out sqftNum))
+                    {
+                        occupancyTable.Add(new Occupancy(name, sqftNum));
+                    }
+                    else
+                    {
+                        throw new Exception(@"Failed to convert value to integer.");
+                    }
                 }
             }
-            return null;
+            return occupancyTable;
         }
     }
 }

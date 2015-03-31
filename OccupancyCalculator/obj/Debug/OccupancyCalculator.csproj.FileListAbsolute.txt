@@ -31,3 +31,14 @@ U:\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj
 U:\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\OccupancyCalculator.csproj.GenerateResource.Cache
 U:\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\Gensler.OccupancyCalculator.dll
 U:\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\Gensler.OccupancyCalculator.pdb
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\bin\Debug\Gensler.OccupancyCalculator.dll
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\bin\Debug\Gensler.OccupancyCalculator.pdb
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\OccupancyView.baml
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\OccupancyView.g.cs
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\Gensler.OccupancyCalculator_MarkupCompile.cache
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\Gensler.OccupancyCalculator.g.resources
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\Gensler.Properties.Resources.resources
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\OccupancyCalculator.csproj.GenerateResource.Cache
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\Gensler.OccupancyCalculator.dll
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\Gensler.OccupancyCalculator.pdb
+C:\Users\22791\Repositories\github.com\dangwalsh\OccupancyCalculator\OccupancyCalculator\obj\Debug\OccupancyCalculator.csprojResolveAssemblyReference.cache

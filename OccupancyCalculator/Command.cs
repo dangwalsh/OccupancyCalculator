@@ -23,7 +23,7 @@ namespace Gensler
                 var doc = uidoc.Document;
                 var mainWindow = new MainWindow(new OccupancyController(new OccupancyModel(commandData)));
 
-                mainWindow.Show();
+                mainWindow.ShowDialog();
 
                 return Result.Succeeded;
             }

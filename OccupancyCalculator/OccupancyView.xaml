@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
     <Grid>
-        <GroupBox Header="GroupBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="300" Width="497">
+        <GroupBox Header="GroupBox" Margin="10">
             <Grid Margin="0,0,0,0">
-                <DataGrid x:Name="_occupancyGrid" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="270" Width="467"/>
+                <DataGrid x:Name="_occupancyGrid" Margin="10,10,8,10"/>
             </Grid>
         </GroupBox>
     </Grid>
