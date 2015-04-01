@@ -16,11 +16,11 @@ namespace Gensler
 
         private readonly OccupancyController _occupancyController;
 
-        //private CollectionView _occupancyCollectionView;
+        private ListCollectionView _occupancyCollectionView;
 
         private int _counter;
 
-        private SolidColorBrush _altBrush = new SolidColorBrush(Colors.LightGray);
+        private readonly SolidColorBrush _altBrush = new SolidColorBrush(Color.FromRgb(240,240,240));
         
         public OccupancyView(OccupancyController oc)
         {
@@ -31,19 +31,9 @@ namespace Gensler
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _occupancies = _occupancyController.GetOccupancies();
-            //_occupancyCollectionView = new CollectionView(_occupancies);
-            OccupancyGrid.ItemsSource = _occupancies; // _occupancyCollectionView;
-            //if (_occupancyCollectionView == null) throw new NullReferenceException();
-            //if (_occupancyCollectionView.CanGroup)
-            //{
-            //    _occupancyCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("LevelName"));
-            //}
-            //ICollectionView cvTasks = CollectionViewSource.GetDefaultView(OccupancyGrid.ItemsSource);
-            //if (cvTasks != null && cvTasks.CanGroup == true)
-            //{
-            //    cvTasks.GroupDescriptions.Clear();
-            //    cvTasks.GroupDescriptions.Add(new PropertyGroupDescription("LevelName"));
-            //}
+            _occupancyCollectionView = new ListCollectionView(_occupancies);
+            _occupancyCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("LevelName"));
+            OccupancyGrid.ItemsSource = _occupancyCollectionView; 
         }
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)
@@ -51,9 +41,9 @@ namespace Gensler
             Close();
         }
 
-        private void OccupancyGrid_LoadingRow(object sender, System.Windows.Controls.DataGridRowEventArgs e)
-        {
-            if (_counter++ % 2 == 0) e.Row.Background = _altBrush;
-        }
+        //private void OccupancyGrid_LoadingRow(object sender, System.Windows.Controls.DataGridRowEventArgs e)
+        //{
+        //    if (_counter++ % 2 == 0) e.Row.Background = _altBrush;
+        //}
     }
 }
