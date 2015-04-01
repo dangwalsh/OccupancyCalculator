@@ -1,11 +1,46 @@
-﻿<Window x:Class="Gensler.MainWindow"
+﻿<Window x:Class="Gensler.OccupancyView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Occupancy" Height="350" Width="525" Loaded="Window_Loaded">
+        Title="Occupancy" Height="350" Width="600" Loaded="Window_Loaded">
     <Grid>
         <GroupBox Header="Calculations" Margin="10,10,10,37">
             <Grid Margin="0,0,0,0">
-                <DataGrid x:Name="OccupancyGrid" Margin="10,10,8,10"/>
+                <DataGrid x:Name="OccupancyGrid" Margin="10" AutoGenerateColumns="False" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Occupancy" Width="*"
+                                            Binding="{Binding Path=Name}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Occ Space Area" Width="100"
+                                            Binding="{Binding Path=OccupancySpaceArea, StringFormat={}{0:F2}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"></Setter>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Area Per Occ" Width="100"
+                                            Binding="{Binding Path=AreaPerOccupant, StringFormat={}{0:F0}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"></Setter>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Occ Load" Width="100"
+                                            Binding="{Binding Path=OccupantLoad, StringFormat={}{0:F2}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"></Setter>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </GroupBox>
         <Button x:Name="BtnCancel" Content="Cancel" Margin="0,0,10,10" IsCancel="True" HorizontalAlignment="Right" Width="75" Height="22" VerticalAlignment="Bottom"/>

@@ -38,21 +38,32 @@ namespace Gensler
         {
             get { return _occupantLoad; }
         }
+
+        private String _levelName;
+
+        public String LevelName
+        {
+            get { return _levelName; }
+            set { _levelName = value; }
+        }
         
-        public Occupancy(string n, int apo)
+        
+        public Occupancy(String n, Int32 apo)
         {
             _name = n;
             _occupancySpaceArea = 0.0;
             _areaPerOccupant = apo;
             _occupantLoad = 0.0;
+            _levelName = "";
         }
 
-        public Occupancy(string n, double osa, int apo, double ol)
+        public Occupancy(String n, Double osa, Int32 apo, Double ol, String l)
         {
             _name = n;
             _occupancySpaceArea = osa;
             _areaPerOccupant = apo;
             _occupantLoad = ol;
+            _levelName = l;
         }
     }
 }

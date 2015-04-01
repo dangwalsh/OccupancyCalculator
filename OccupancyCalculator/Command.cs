@@ -18,7 +18,7 @@ namespace Gensler
         {
             try
             {
-                var mainWindow = new MainWindow(new OccupancyController(new OccupancyModel(commandData)));
+                var mainWindow = new OccupancyView(new OccupancyController(new OccupancyModel(commandData)));
 
                 mainWindow.ShowDialog();
 

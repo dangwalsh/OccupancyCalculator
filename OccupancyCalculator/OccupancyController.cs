@@ -4,16 +4,16 @@ namespace Gensler
 {
     public class OccupancyController
     {
-        private readonly OccupancyModel _documentData;
+        private readonly OccupancyModel _occupancyModel;
 
         public OccupancyController(OccupancyModel dd)
         {
-            _documentData = dd;
+            _occupancyModel = dd;
         }
 
         public List<Occupancy> GetOccupancies()
         {
-            return _documentData.Occupancies;
+            return _occupancyModel.Occupancies;
         }
     }
 }

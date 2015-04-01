@@ -11,16 +11,24 @@ namespace Gensler
     {
         private readonly Document _document;
 
+        private readonly String _scheduleName; 
+
+        private String _keyName;
+
         private readonly List<Occupancy> _occupancyTable;
+
+        private readonly List<Element> _levels;
+
+        private List<Element> Levels
+        {
+            get { return _levels; }
+        }
 
         private readonly List<Element> _rooms;
 
-        public List<Element> Rooms
+        private List<Element> Rooms
         {
-            get
-            {
-                return _rooms;
-            }
+            get { return _rooms; }
         }
 
         private readonly List<Occupancy> _occupancies;
@@ -32,52 +40,64 @@ namespace Gensler
                 return _occupancies;
             }
         }
-        
-        public OccupancyModel(ExternalCommandData commandData)
+
+        public OccupancyModel(ExternalCommandData commandData, 
+            String schedName = @"* Manage Occupancy Table Per 2006 & 2009 Ibc 1004.1.2")
         {
             _document = commandData.Application.ActiveUIDocument.Document;
+            _scheduleName = @"* Manage Occupancy Table Per 2006 & 2009 Ibc 1004.1.2";//schedName;
             _occupancyTable = GetKeys();
+            _levels = GetLevels();
             _rooms = GetRooms();
             _occupancies = GetOccupancies();
         }
 
+        private List<Element> GetLevels()
+        {
+            var collector = new FilteredElementCollector(_document);
+            return collector.OfClass(typeof(Level)).ToElements().ToList();
+        }
+
         private List<Element> GetRooms()
         {
-            FilteredElementCollector collector = new FilteredElementCollector(_document);
+            var collector = new FilteredElementCollector(_document);
             return collector.OfClass(typeof(SpatialElement)).ToElements().ToList();
         }
 
         private List<Occupancy> GetOccupancies()
         {
-            List<Occupancy> occupancies = new List<Occupancy>();
-            foreach (var element in Rooms)
+            var occupancies = new List<Occupancy>();
+            foreach (var levelElement in Levels)
             {
-                Room room = element as Room;
-                if (null != room)
+                var level = levelElement as Level;
+                if (null == level) continue;
+                var roomsOnLevel = Rooms.OfType<Room>().Where(r => r.Level == level);
+                foreach (var room in roomsOnLevel)
                 {
                     var parameter =
                         room.Parameters.OfType<Parameter>()
-                            .FirstOrDefault(p => p.Definition.Name == @"Room Occupancy Designation");
-                    if (null != parameter)
+                            .FirstOrDefault(p => p.Definition.Name == _keyName);
+                    if (null == parameter) continue;
+                    var keyName =
+                        _document.GetElement(parameter.AsElementId()).Name;
+                    //var existing =
+                    //    occupancies.FirstOrDefault(o => o.Name == keyName);
+                    var existing = (from o in occupancies
+                        where (o.Name == keyName)
+                        where (o.LevelName == level.Name)
+                        select o).First();
+                    if (null != existing)
                     {
-                        var keyName = 
-                            _document.GetElement(parameter.AsElementId()).Name;
-                        var existing = 
-                            occupancies.FirstOrDefault(o => o.Name == keyName);
-                        if (null != existing)
-                        {
-                            existing.OccupancySpaceArea += room.Area;
-                        }
-                        else
-                        {
-                            var unused = 
-                                _occupancyTable.FirstOrDefault(o => o.Name == keyName);
-                            if (null != unused)
-                            {
-                                unused.OccupancySpaceArea += room.Area;
-                                occupancies.Add(unused);
-                            }
-                        }
+                        existing.OccupancySpaceArea += room.Area;
+                    }
+                    else
+                    {
+                        var unused =
+                            _occupancyTable.FirstOrDefault(o => o.Name == keyName);
+                        if (null == unused) continue;
+                        unused.OccupancySpaceArea += room.Area;
+                        unused.LevelName = level.Name;
+                        occupancies.Add(unused);
                     }
                 }
             }
@@ -86,34 +106,27 @@ namespace Gensler
 
         private List<Occupancy> GetKeys()
         {
-            List<Occupancy> occupancyTable = new List<Occupancy>();
-            FilteredElementCollector collector = new FilteredElementCollector(_document);
-            List<Element> viewSchedules = collector.OfClass(typeof (TableView)).ToElements().ToList();
+            var occupancyTable = new List<Occupancy>();
+            var collector = new FilteredElementCollector(_document);
+            var viewSchedules = collector.OfClass(typeof (TableView)).ToElements().ToList();
             var element =
-                viewSchedules.FirstOrDefault(v => v.Name == @"* Manage Occupancy Table Per 2006 & 2009 Ibc 1004.1.2");
-            ViewSchedule viewSchedule = element as ViewSchedule;
-            if (null != viewSchedule)
+                viewSchedules.FirstOrDefault(v => v.Name == _scheduleName);
+            var viewSchedule = element as ViewSchedule;
+            if (null == viewSchedule) return occupancyTable;
+            _keyName = viewSchedule.KeyScheduleParameterName;
+            var sd = viewSchedule.GetTableData().GetSectionData(SectionType.Body);
+            for (var iRow = 2; iRow < sd.NumberOfRows; iRow++)
             {
-                if (@"Room Occupancy Designation" != viewSchedule.KeyScheduleParameterName)
+                var name = viewSchedule.GetCellText(SectionType.Body, iRow, 0);
+                var sqft = viewSchedule.GetCellText(SectionType.Body, iRow, 1);
+                int sqftNum;
+                if (Int32.TryParse(sqft, out sqftNum))
                 {
-                    throw new Exception(@"Addin is accessing the incorrect schedule key");
+                    occupancyTable.Add(new Occupancy(name, sqftNum));
                 }
-
-                var sd = viewSchedule.GetTableData().GetSectionData(SectionType.Body);
-
-                for (int iRow = 2; iRow < sd.NumberOfRows; iRow++)
+                else
                 {
-                    var name = viewSchedule.GetCellText(SectionType.Body, iRow, 0);
-                    var sqft = viewSchedule.GetCellText(SectionType.Body, iRow, 1);
-                    int sqftNum;
-                    if (Int32.TryParse(sqft, out sqftNum))
-                    {
-                        occupancyTable.Add(new Occupancy(name, sqftNum));
-                    }
-                    else
-                    {
-                        throw new Exception(@"Failed to convert value to integer.");
-                    }
+                    throw new Exception(@"Failed to convert to integer value.");
                 }
             }
             return occupancyTable;
