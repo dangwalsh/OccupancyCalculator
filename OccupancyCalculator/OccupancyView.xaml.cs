@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Gensler
 {
@@ -14,9 +18,9 @@ namespace Gensler
 
         //private CollectionView _occupancyCollectionView;
 
-        //private int _counter;
+        private int _counter;
 
-        //private SolidColorBrush _altBrush = new SolidColorBrush(Colors.LightGray);
+        private SolidColorBrush _altBrush = new SolidColorBrush(Colors.LightGray);
         
         public OccupancyView(OccupancyController oc)
         {
@@ -28,11 +32,17 @@ namespace Gensler
         {
             _occupancies = _occupancyController.GetOccupancies();
             //_occupancyCollectionView = new CollectionView(_occupancies);
-            OccupancyGrid.ItemsSource = _occupancies; //_occupancyCollectionView;
+            OccupancyGrid.ItemsSource = _occupancies; // _occupancyCollectionView;
             //if (_occupancyCollectionView == null) throw new NullReferenceException();
             //if (_occupancyCollectionView.CanGroup)
             //{
             //    _occupancyCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("LevelName"));
+            //}
+            //ICollectionView cvTasks = CollectionViewSource.GetDefaultView(OccupancyGrid.ItemsSource);
+            //if (cvTasks != null && cvTasks.CanGroup == true)
+            //{
+            //    cvTasks.GroupDescriptions.Clear();
+            //    cvTasks.GroupDescriptions.Add(new PropertyGroupDescription("LevelName"));
             //}
         }
 
@@ -41,9 +51,9 @@ namespace Gensler
             Close();
         }
 
-        //private void OccupancyGrid_LoadingRow(object sender, System.Windows.Controls.DataGridRowEventArgs e)
-        //{
-        //    if (_counter++%2 == 0) e.Row.Background = _altBrush;
-        //}
+        private void OccupancyGrid_LoadingRow(object sender, System.Windows.Controls.DataGridRowEventArgs e)
+        {
+            if (_counter++ % 2 == 0) e.Row.Background = _altBrush;
+        }
     }
 }

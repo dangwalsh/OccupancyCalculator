@@ -50,20 +50,18 @@ namespace Gensler
         
         public Occupancy(String n, Int32 apo)
         {
-            _name = n;
-            _occupancySpaceArea = 0.0;
-            _areaPerOccupant = apo;
-            _occupantLoad = 0.0;
-            _levelName = "";
+            Name = n;
+            OccupancySpaceArea = 0.0;
+            AreaPerOccupant = apo;
+            LevelName = "";
         }
 
-        public Occupancy(String n, Double osa, Int32 apo, Double ol, String l)
+        public Occupancy(String n, Double osa, Int32 apo, String ln)
         {
-            _name = n;
-            _occupancySpaceArea = osa;
-            _areaPerOccupant = apo;
-            _occupantLoad = ol;
-            _levelName = l;
+            Name = n;            
+            AreaPerOccupant = apo;
+            LevelName = ln;
+            OccupancySpaceArea = osa;
         }
     }
 }

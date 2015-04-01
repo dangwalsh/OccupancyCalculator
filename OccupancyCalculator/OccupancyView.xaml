@@ -5,8 +5,10 @@
     <Grid>
         <GroupBox Header="Calculations" Margin="10,10,10,37">
             <Grid Margin="0,0,0,0">
-                <DataGrid x:Name="OccupancyGrid" Margin="10" AutoGenerateColumns="False" >
+                <DataGrid x:Name="OccupancyGrid" Margin="10" AutoGenerateColumns="False" LoadingRow="OccupancyGrid_LoadingRow" >
                     <DataGrid.Columns>
+                        <DataGridTextColumn Header="Level" Width="60"
+                                            Binding="{Binding Path=LevelName}"></DataGridTextColumn>
                         <DataGridTextColumn Header="Occupancy" Width="*"
                                             Binding="{Binding Path=Name}">
                             <DataGridTextColumn.ElementStyle>
@@ -16,7 +18,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn Header="Occ Space Area" Width="100"
-                                            Binding="{Binding Path=OccupancySpaceArea, StringFormat={}{0:F2}}">
+                                            Binding="{Binding Path=OccupancySpaceArea, StringFormat={}{0:F0}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="TextAlignment" Value="Center"></Setter>

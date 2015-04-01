@@ -73,7 +73,7 @@ namespace Gensler
             {
                 var level = levelElement as Level;
                 if (null == level) continue;
-                var roomsOnLevel = Rooms.OfType<Room>().Where(r => r.Level == level);
+                var roomsOnLevel = Rooms.OfType<Room>().Where(r => r.Level.Name == level.Name);
                 foreach (var room in roomsOnLevel)
                 {
                     var parameter =
@@ -82,12 +82,8 @@ namespace Gensler
                     if (null == parameter) continue;
                     var keyName =
                         _document.GetElement(parameter.AsElementId()).Name;
-                    //var existing =
-                    //    occupancies.FirstOrDefault(o => o.Name == keyName);
-                    var existing = (from o in occupancies
-                        where (o.Name == keyName)
-                        where (o.LevelName == level.Name)
-                        select o).First();
+                    var existing = 
+                        occupancies.FirstOrDefault(o => o.Name == keyName && o.LevelName == level.Name);
                     if (null != existing)
                     {
                         existing.OccupancySpaceArea += room.Area;
@@ -97,9 +93,7 @@ namespace Gensler
                         var unused =
                             _occupancyTable.FirstOrDefault(o => o.Name == keyName);
                         if (null == unused) continue;
-                        unused.OccupancySpaceArea += room.Area;
-                        unused.LevelName = level.Name;
-                        occupancies.Add(unused);
+                        occupancies.Add(new Occupancy(unused.Name, room.Area, unused.AreaPerOccupant, level.Name));
                     }
                 }
             }
