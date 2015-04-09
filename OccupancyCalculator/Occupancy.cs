@@ -4,6 +4,9 @@ using Autodesk.Revit.DB;
 
 namespace Gensler
 {
+    /// <summary>
+    /// Occupancy data object
+    /// </summary>
     public class Occupancy
     {
         private String _name;
@@ -57,7 +60,11 @@ namespace Gensler
             set { _loadParameters = value; }
         }
         
-                
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="apo"></param>
         public Occupancy(String n, Int32 apo)
         {
             Name = n;
@@ -66,6 +73,14 @@ namespace Gensler
             LevelName = "";
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="osa"></param>
+        /// <param name="apo"></param>
+        /// <param name="ln"></param>
+        /// <param name="p"></param>
         public Occupancy(String n, Double osa, Int32 apo, String ln, Parameter p)
         {
             Name = n;            

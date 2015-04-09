@@ -4,6 +4,9 @@ using Autodesk.Revit.UI;
 
 namespace Gensler
 {
+    /// <summary>
+    /// Revit command entry points
+    /// </summary>
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
     class Command : IExternalCommand
     {
@@ -18,7 +21,6 @@ namespace Gensler
         {
             try
             {
-                //var occupancyView = new OccupancyView(new OccupancyController(new OccupancyModel(commandData)));
                 var occupancyView = new OccupancyView(new OccupancyModel(commandData));
 
                 occupancyView.ShowDialog();
@@ -27,7 +29,7 @@ namespace Gensler
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("Error", ex.Message);
+                TaskDialog.Show(@"Error", ex.Message);
                 return Result.Failed;
             }
         }

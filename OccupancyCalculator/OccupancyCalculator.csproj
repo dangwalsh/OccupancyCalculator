@@ -69,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Occupancy.cs" />
-    <Compile Include="OccupancyController.cs" />
     <Compile Include="OccupancyModel.cs" />
     <Compile Include="OccupancyView.xaml.cs">
       <DependentUpon>OccupancyView.xaml</DependentUpon>

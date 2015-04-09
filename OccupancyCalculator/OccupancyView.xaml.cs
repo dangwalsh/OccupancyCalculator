@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace Gensler
 {
@@ -10,44 +8,43 @@ namespace Gensler
     /// </summary>
     public partial class OccupancyView : Window
     {
-        private List<Occupancy> _occupancies;
-
-        private readonly OccupancyController _occupancyController;
-
         private readonly OccupancyModel _occupancyModel;
+
+        private OccupancyModel OccupancyModel
+        {
+            get { return _occupancyModel; }
+        }
 
         private ListCollectionView _occupancyCollectionView;
 
-        private int _counter;
+        private ListCollectionView OccupancyCollectionView
+        {
+            get { return _occupancyCollectionView; }
+            set { _occupancyCollectionView = value; }
+        }
 
-        private readonly SolidColorBrush _altBrush = new SolidColorBrush(Color.FromRgb(240,240,240));
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="om"></param>
         public OccupancyView(OccupancyModel om)
         {
             _occupancyModel = om;
             InitializeComponent();
+            OccupancyCollectionView = new ListCollectionView(OccupancyModel.Occupancies);
+            if (OccupancyCollectionView.GroupDescriptions == null) return;
+            OccupancyCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(@"LevelName"));
+            OccupancyGrid.ItemsSource = OccupancyCollectionView;
         }
         
-        public OccupancyView(OccupancyController oc)
-        {
-            _occupancyController = oc;           
-            InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //_occupancies = _occupancyController.GetOccupancies();
-            _occupancies = _occupancyModel.Occupancies;
-            _occupancyCollectionView = new ListCollectionView(_occupancies);
-            _occupancyCollectionView.GroupDescriptions.Add(new PropertyGroupDescription("LevelName"));
-            OccupancyGrid.ItemsSource = _occupancyCollectionView; 
-            
-        }
-
+        /// <summary>
+        /// Event handler sets "Occupant Load" Parameter
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnOk_Click(object sender, RoutedEventArgs e)
         {
-            //_occupancyController.SetOccupantLoadParameters();
-            _occupancyModel.SetOccupantLoadParameter();          
+            OccupancyModel.SetOccupantLoadParameter();          
             Close();
         }
     }
