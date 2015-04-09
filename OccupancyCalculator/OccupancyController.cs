@@ -6,14 +6,19 @@ namespace Gensler
     {
         private readonly OccupancyModel _occupancyModel;
 
-        public OccupancyController(OccupancyModel dd)
+        public OccupancyController(OccupancyModel om)
         {
-            _occupancyModel = dd;
+            _occupancyModel = om;
         }
 
         public List<Occupancy> GetOccupancies()
         {
             return _occupancyModel.Occupancies;
+        }
+
+        public void SetOccupantLoadParameters()
+        {
+            _occupancyModel.SetOccupantLoadParameter();
         }
     }
 }

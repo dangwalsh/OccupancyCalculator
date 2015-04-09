@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
+using System.Globalization;
 using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
@@ -13,7 +12,9 @@ namespace Gensler
     {
         private readonly Document _document;
 
-        private readonly String _scheduleName; 
+        private readonly String _scheduleName;
+
+        private readonly String _loadName;
 
         private String _keyName;
 
@@ -37,17 +38,15 @@ namespace Gensler
 
         public List<Occupancy> Occupancies
         {
-            get
-            {
-                return _occupancies;
-            }
+            get { return _occupancies; }
         }
 
         public OccupancyModel(ExternalCommandData commandData, 
             String schedName = @"* Manage Occupancy Table Per 2006 & 2009 Ibc 1004.1.2")
         {
             _document = commandData.Application.ActiveUIDocument.Document;
-            _scheduleName = @"* Manage Occupancy Table Per 2006 & 2009 Ibc 1004.1.2";//schedName;
+            _scheduleName = @"* Manage Occupancy Table Per 2006 & 2009 Ibc 1004.1.2";
+            _loadName = @"Occupant Load";
             _occupancyTable = GetKeys();
             _levels = GetLevels();
             _rooms = GetRooms();
@@ -76,24 +75,28 @@ namespace Gensler
                 var roomsOnLevel = Rooms.OfType<Room>().Where(r => r.Level.Name == level.Name);
                 foreach (var room in roomsOnLevel)
                 {
-                    var parameter =
+                    var occupancyParameter =
                         room.Parameters.OfType<Parameter>()
-                            .FirstOrDefault(p => p.Definition.Name == _keyName);
-                    if (null == parameter) continue;
+                        .FirstOrDefault(p => p.Definition.Name == _keyName);
+                    var loadParameter =
+                        room.Parameters.OfType<Parameter>()
+                        .FirstOrDefault(l => l.Definition.Name == _loadName);
+                    if (null == occupancyParameter) continue;
                     var keyName =
-                        _document.GetElement(parameter.AsElementId()).Name;
+                        _document.GetElement(occupancyParameter.AsElementId()).Name;
                     var existing = 
                         occupancies.FirstOrDefault(o => o.Name == keyName && o.LevelName == level.Name);
                     if (null != existing)
                     {
                         existing.OccupancySpaceArea += room.Area;
+                        existing.LoadParameters.Add(loadParameter);
                     }
                     else
                     {
                         var unused =
                             _occupancyTable.FirstOrDefault(o => o.Name == keyName);
                         if (null == unused) continue;
-                        occupancies.Add(new Occupancy(unused.Name, room.Area, unused.AreaPerOccupant, level.Name));
+                        occupancies.Add(new Occupancy(unused.Name, room.Area, unused.AreaPerOccupant, level.Name, loadParameter));
                     }
                 }
             }
@@ -126,6 +129,49 @@ namespace Gensler
                 }
             }
             return occupancyTable;
+        }
+
+        public void SetOccupantLoadParameter()
+        {
+            Transaction t = new Transaction(_document, @"Fill Occupant Params");
+            if (t.Start() == TransactionStatus.Started)
+            {
+                foreach (var occupancy in Occupancies)
+                {
+                    foreach (var loadParameter in occupancy.LoadParameters)
+                    {
+                        try
+                        {
+                            if (loadParameter.Set(Math.Ceiling(occupancy.OccupantLoad))) continue;
+                            throw new Exception(@"Failed to set Occupant Load value");
+                        }
+                        catch (Exception ex)
+                        {
+                            TaskDialog.Show("Error", ex.Message);
+                        }
+                    }
+                }
+                t.Commit();
+            }
+        }
+
+        public void ClearOccupantLoadParameter()
+        {
+            foreach (var parameter in Rooms
+                .Select(element => element as Room)
+                .Select(room => room.Parameters.OfType<Parameter>()
+                .FirstOrDefault(p => p.Definition.Name == _loadName))
+                .Where(parameter => null != parameter))
+            {
+                try
+                {
+                    if (!parameter.SetValueString(@"")) throw new Exception(@"Failed to clear Occupant Load value");
+                }
+                catch (Exception ex)
+                {
+                    TaskDialog.Show("Error", ex.Message);
+                }
+            }
         }
     }
 }

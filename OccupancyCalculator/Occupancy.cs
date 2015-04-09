@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Autodesk.Revit.DB;
 
 namespace Gensler
 {
@@ -46,8 +48,16 @@ namespace Gensler
             get { return _levelName; }
             set { _levelName = value; }
         }
+
+        private List<Parameter> _loadParameters;
+
+        public List<Parameter> LoadParameters
+        {
+            get { return _loadParameters; }
+            set { _loadParameters = value; }
+        }
         
-        
+                
         public Occupancy(String n, Int32 apo)
         {
             Name = n;
@@ -56,12 +66,13 @@ namespace Gensler
             LevelName = "";
         }
 
-        public Occupancy(String n, Double osa, Int32 apo, String ln)
+        public Occupancy(String n, Double osa, Int32 apo, String ln, Parameter p)
         {
             Name = n;            
             AreaPerOccupant = apo;
             LevelName = ln;
             OccupancySpaceArea = osa;
+            LoadParameters = new List<Parameter> {p};
         }
     }
 }
